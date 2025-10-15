@@ -1,0 +1,16 @@
+graph {
+H--B [label="2"];
+H--G [label="14"];
+B--G [label="4"];
+B--D [label="9"];
+B--C [label="2"];
+B--A [label="1"];
+A--C [label="4"];
+C--D [label="1"];
+C--E [label="3"];
+E--D [label="1"];
+E--F [label="1"];
+F--D [label="3"];
+F--G [label="6"];
+G--D [label="1"];
+}
