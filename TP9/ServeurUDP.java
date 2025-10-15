@@ -3,35 +3,23 @@ import java.net.*;
 
 public class ServeurUDP
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
-		try
-		{
-			DatagramSocket socket = new DatagramSocket(44969);
-			System.out.println("Serveur UDP en attente sur le port 44969...");
+	DatagramSocket sock = new DatagramSocket(49969);
+	while (true)
+	{
+		System.out.println("- Waiting data");
+		DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
+		sock.receive(packet);
+		String str = new String(packet.getData());
+		System.out.println("str = " + str);
 
-			byte[] buffer = new byte[1024];
-
-			while (true)
-			{
-				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-
-				socket.receive(packet);
-
-				String msg = new String(packet.getData(), 0, packet.getLength(), "UTF-8");
-				System.out.println("Reçu de " + packet.getAddress() + ":" + packet.getPort() + " -> " + msg);
-
-				byte[] replyData = msg.getBytes("UTF-8");
-				DatagramPacket reply = new DatagramPacket(replyData, replyData.length, packet.getAddress(), packet.getPort());
-
-				socket.send(reply);
-			}
-		}
-			catch (IOException e)
-			{
-				System.err.println("Erreur serveur UDP : " + e.getMessage());
+		InetAddress clientAddr = packet.getAddress();
+		int clientPort = packet.getPort();
+		byte[] responseData = str.getBytes();
+		DatagramPacket responsePacket = new DatagramPacket(responseData, responseData.length, clientAddr, clientPort);
+		sock.send(responsePacket);
 		}
 	}
 }
-
 
